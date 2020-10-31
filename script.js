@@ -2,7 +2,8 @@ $("document").ready(function () {
   //event listener for button clicked
   $(".btn").click(function (event) {
     event.preventDefault();
-    var userInput = $("#inlineFormInputName2").val();
+    var userInput = $("#search-input").val();
+
     //fetch api info function
     fetch(
       "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -17,6 +18,7 @@ $("document").ready(function () {
         return response.json();
       })
       .then(function (data) {
+        $("#weatherNow").empty();
         console.log(data);
         //dynamically create current weather forecast
         $("#weatherNow").append(
@@ -26,13 +28,11 @@ $("document").ready(function () {
         var weatherIcon = data.weather[0].icon;
         console.log(weatherIcon);
         var iconURL = "http://openweathermap.org/img/w/" + weatherIcon + ".png";
-        // $("#weatherNow").append("<img>").addClass("iconImg");
-        // $("iconImg").attr("src", iconURL);
         $("#weatherNow").append(`<img src = "${iconURL}"/>`);
         console.log(iconURL);
         //appends current Temp
         $("#weatherNow").append(
-          "<h5>" + "Temp: " + data.main.temp + "F" + "</h5>"
+          "<h5>" + "Temp: " + data.main.temp + "°F" + "</h5>"
         );
         //appends current humidity
         $("#weatherNow").append(
@@ -60,10 +60,24 @@ $("document").ready(function () {
       .then(function (data) {
         console.log(data);
         //for loop to append 5 dat forecast
+        $("#forecastFive").empty();
         for (i = 0; i < data.list.length; i += 8) {
-          $("#forecastFive")
-            .addClass("card-body card-title")
-            .append(data.dt_txt);
+          var date = data.list[i].dt_txt;
+          var temp = data.list[i].main.temp;
+          // var weatherIconCard = data.list[i].weather.icon;
+          // console(weatherIconCard);
+          // var cardIconURL =
+          //   "http://openweathermap.org/img/w/" + weatherIconCard + ".png";
+
+          // $("#weatherNow").append(`<img src = "${cardIconURL}"/>`);
+
+          $("#forecastFive").append(`
+            <div class= "col mb-4">
+                <div class= "card">${date}
+                <p>${temp}</p>
+                </div>
+            </div>
+            `);
         }
       });
   });
