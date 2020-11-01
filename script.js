@@ -4,7 +4,14 @@ $("document").ready(function () {
     event.preventDefault();
     var userInput = $("#search-input").val();
 
-    //fetch api info function
+    //storing userInput in local storage and prepend to page
+    localStorage.setItem("userInput", userInput);
+    var prevInput = localStorage.getItem("userInput");
+    $("#prev-input").prepend(`<ul class = "list-group">
+    <li class= "list-group-item">${prevInput}</li>
+    </ul>`);
+
+    //call to current weather API--------------------------------------------------------------
     fetch(
       "https://api.openweathermap.org/data/2.5/weather?q=" +
         userInput +
@@ -19,7 +26,6 @@ $("document").ready(function () {
       })
       .then(function (data) {
         $("#weatherNow").empty();
-        console.log(data);
         //dynamically create current weather forecast
         $("#weatherNow").append(
           "<h3>" + data.name + " (" + moment().format("L") + ")" + "</h3>"
@@ -44,7 +50,8 @@ $("document").ready(function () {
           "<h5>" + "Wind Speed: " + data.wind.speed + "MPH" + "</h5>"
         );
       });
-    console.log(userInput);
+
+    //calling to the 5-day forecast API--------------------------------------------------
     fetch(
       "https://api.openweathermap.org/data/2.5/forecast?q=" +
         userInput +
@@ -62,19 +69,21 @@ $("document").ready(function () {
         //for loop to append 5 dat forecast
         $("#forecastFive").empty();
         for (i = 0; i < data.list.length; i += 8) {
-          var date = data.list[i].dt_txt;
+          var date = moment(data.list[i].dt_txt).format("L");
           var temp = data.list[i].main.temp;
-          // var weatherIconCard = data.list[i].weather.icon;
-          // console(weatherIconCard);
-          // var cardIconURL =
-          //   "http://openweathermap.org/img/w/" + weatherIconCard + ".png";
+          var humidity = data.list[i].main.humidity;
+          var weatherIconCard = data.list[i].weather[0].icon;
+          console.log(weatherIconCard);
+          var cardIconURL =
+            "http://openweathermap.org/img/w/" + weatherIconCard + ".png";
 
-          // $("#weatherNow").append(`<img src = "${cardIconURL}"/>`);
-
+          //dynamically create forecast cards
           $("#forecastFive").append(`
             <div class= "col mb-4">
                 <div class= "card">${date}
-                <p>${temp}</p>
+                <img src = "${cardIconURL}" width="40";> 
+                <p>Temp: ${temp}</p>
+                <p>Humidity: ${humidity}</p>
                 </div>
             </div>
             `);

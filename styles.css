@@ -2,9 +2,7 @@ nav h1 {
   color: whitesmoke;
 }
 
-form {
-  /* margin: auto; */
-  /* margin: 10px 0px 10px 10px; */
+body {
   background-color: rgb(197, 219, 219);
 }
 
@@ -14,4 +12,8 @@ label {
 
 aside {
   margin: 10px;
+}
+
+#forecastFive .card {
+  background-color: rgb(0, 157, 255);
 }
