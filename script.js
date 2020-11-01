@@ -32,10 +32,9 @@ $("document").ready(function () {
         );
         //appends current Weather Icon
         var weatherIcon = data.weather[0].icon;
-        console.log(weatherIcon);
         var iconURL = "http://openweathermap.org/img/w/" + weatherIcon + ".png";
         $("#weatherNow").append(`<img src = "${iconURL}"/>`);
-        console.log(iconURL);
+
         //appends current Temp
         $("#weatherNow").append(
           "<h5>" + "Temp: " + data.main.temp + "°F" + "</h5>"
@@ -65,7 +64,6 @@ $("document").ready(function () {
         return response.json();
       })
       .then(function (data) {
-        console.log(data);
         //for loop to append 5 dat forecast
         $("#forecastFive").empty();
         for (i = 0; i < data.list.length; i += 8) {
@@ -73,7 +71,6 @@ $("document").ready(function () {
           var temp = data.list[i].main.temp;
           var humidity = data.list[i].main.humidity;
           var weatherIconCard = data.list[i].weather[0].icon;
-          console.log(weatherIconCard);
           var cardIconURL =
             "http://openweathermap.org/img/w/" + weatherIconCard + ".png";
 
